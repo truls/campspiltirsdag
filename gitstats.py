@@ -41,8 +41,8 @@ if len(sys.argv) > 1:
 
 for user in users:
     userstate = []
-    #os.chdir(cwd)
-    d.pushd
+    os.chdir(cwd)
+    #d.pushd(cwd)
     try:
         os.mkdir(user)
         print "Creating dir for ", user
@@ -82,10 +82,10 @@ for user in users:
                 latestcommit = f.read().strip()
             print "Loaded saved lastest commit:", latestcommit
         except IOError, e:
-            print e
+            #print e
             if not e.errno == 2:
                 raise
-            lastestcommit = ""
+            latestcommit = ""
             print "No saved lastest commit"
         
         try:
@@ -118,10 +118,10 @@ for user in users:
         ocwd = os.getcwd()
         os.chdir(os.path.join(ocwd,repo["name"]))
         print "Commit count for", user, "is now", commit[user]
-        commit[user] += len(Popen(["git", "log", "--pretty=format:\"%H\""], stdout=PIPE).communicate()[0].split())
+        commit[user] += len(Popen(["git", "log", "--pretty=format:\"%H\"", "--since=1302883200"], stdout=PIPE).communicate()[0].split())
         print "Commit count for", user, "is now", commit[user]
         os.chdir(ocwd)
-
+        #"--author=\"%s\"" % username
 os.chdir(cwd)
 with open("commitcount.txt", "w") as f:
     for name, commits in commit.iteritems():
