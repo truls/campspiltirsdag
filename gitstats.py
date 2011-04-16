@@ -24,6 +24,7 @@ users = {'Athas': {'commits': 0},
          'roschnowski': {'commits': 0},
          'svip': {'commits': 0},
          'truls': {'commits': 0},
+         'degeberg': {'commits': 0},
          }
 
 commit = {}
