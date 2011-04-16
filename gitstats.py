@@ -69,6 +69,7 @@ for user in users.iterkeys():
         
 
         ghjson = urllib2.urlopen("http://github.com/api/v2/json/repos/show/" + user + "/" + reponame + "/branches")
+        time.sleep(2)
         branches = json.decode(ghjson.read())
         #print branches["branches"]
         for branch, head in branches["branches"].iteritems():
