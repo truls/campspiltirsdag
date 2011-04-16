@@ -10,6 +10,7 @@ from datetime import timedelta
 import os
 import sys
 import cPickle as pickle
+import time
 
 json = JSONDecoder()
 
@@ -108,6 +109,7 @@ for user in users.iterkeys():
                     #print commitinfo
                     try:
                         commitinfo =  decoder(commitinfo)[0]
+                        time.sleep(2)
                     except UnicodeDecodeError:
                         print "FUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU"
                         # Let's try next page to see if that's any better
