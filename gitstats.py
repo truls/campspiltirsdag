@@ -1,14 +1,10 @@
 #!/usr/bin/python2
 
-
 from json import JSONDecoder
 import urllib2
-from subprocess import Popen, PIPE, call
 import codecs
 from dateutil.parser import parse as dateparser
-from datetime import timedelta
 import os
-import sys
 import cPickle as pickle
 import time
 
@@ -27,7 +23,7 @@ users = {'Athas': {'commits': 0},
          'degeberg': {'commits': 0},
          }
 
-commit = {}
+commit= {}
 
 #lanstart = 1302883200
 lanstart = dateparser("2011-04-15T16:00:00+01:00")
@@ -40,13 +36,6 @@ for user in users.iterkeys():
 if os.path.exists("commits.pickle"):
     with open("commits.pickle") as f:
         users = pickle.load(f)
-
-#with open("users.pickle")
-
-# Basepath. Set to pwd if not specified
-cwd = os.getcwd()
-if len(sys.argv) > 1:
-    cwd = sys.argv[1]
 
 # Create directories and get list of user repostiroes
 
@@ -88,28 +77,20 @@ for user in users.iterkeys():
             print "Updates for repository", reponame, "old head:", oldhead, "new head:", head
             users[user][reponame][branch] = head
 
-            #currentdate = lanstart + timedelta(1)
-            page=1
+            page = 1
 
             stoploop = False
-            commitpage = 1
 
-            # Loop while: Commit ID doesn't match old id
-            #             commit time isn't older than the start of DIKULAN
-            #while currentdate > lanstart and \
-
-            # There are possibly new commits. Recount
             while True:
-                
                 try:
                     url = "http://github.com/api/v2/json/commits/list/" + \
                           user + "/" + reponame + "/" + branch + "?page=" + str(page)
                     print "Fetching URL:", url
                     decoder = codecs.getdecoder('utf-8')
                     commitinfo = urllib2.urlopen(url).read()
-                    #print commitinfo
                     try:
                         commitinfo =  decoder(commitinfo)[0]
+                        # Github only 60 requests every minute
                         time.sleep(2)
                     except UnicodeDecodeError:
                         print "FUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU"
@@ -118,7 +99,6 @@ for user in users.iterkeys():
                         continue
                     
                     commits = json.decode(commitinfo)["commits"]
-                    #print "Github says current commit is", currentcommit
                 except urllib2.HTTPError:
                     print "Fetching commits from github failed. That we have reached the end of the list."
                     stoploop = True
